@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>太阳，地球，月球</title>
-		<script src="https://github.com/litong9406/canvas/blob/master/earth_revolution/js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -22,18 +22,30 @@
 		<canvas id="myCanvas" width="" height=""></canvas>
 	</body>
 	<script type="text/javascript">
-		var canvas = $("#myCanvas"),
-			ctx = canvas.get(0).getContext("2d"),
-			width = $(window).get(0).innerWidth,
-			height = $(window).get(0).innerHeight;
-		canvas.attr("width", width);
-		canvas.attr("height", height);
-		$(window).resize(changeSize); //canvas画布自适应
-		function changeSize() {
-			width = $(window).get(0).innerWidth;
-			height = $(window).get(0).innerHeight;
-			canvas.attr("width", width);
-			canvas.attr("height", height);
+		//		var canvas = $("#myCanvas"),
+//			ctx = canvas.get(0).getContext("2d"),
+//			width = $(window).get(0).innerWidth,
+//			height = $(window).get(0).innerHeight;
+//		canvas.attr("width", width);
+//		canvas.attr("height", height);
+//		$(window).resize(changeSize); //canvas画布自适应
+//		function changeSize() {
+//			width = $(window).get(0).innerWidth;
+//			height = $(window).get(0).innerHeight;
+//			canvas.attr("width", width);
+//			canvas.attr("height", height);
+//		}
+		var canvas=document.getElementById("myCanvas"),
+			ctx=canvas.getContext("2d"),
+			width=document.documentElement.clientWidth||document.body.clientHeight,
+			height=document.documentElement.clientHeight||document.body.clientHeight;
+		canvas.width=width;
+		canvas.height=height;
+		window.onresize=function(){
+			width=document.documentElement.clientWidth||document.body.clientHeight,
+			height=document.documentElement.clientHeight||document.body.clientHeight;
+		canvas.width=width;
+		canvas.height=height;
 		}
 
 		function Circle(origin, radius, augular) {
