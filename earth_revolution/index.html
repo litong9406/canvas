@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>太阳，地球，月球</title>
+		<script src="js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				font-size: 0;
+			}
+			
+			canvas {
+				background: rgb(240,240,240);
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="" height=""></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = $("#myCanvas"),
+			ctx = canvas.get(0).getContext("2d"),
+			width = $(window).get(0).innerWidth,
+			height = $(window).get(0).innerHeight;
+		canvas.attr("width", width);
+		canvas.attr("height", height);
+		$(window).resize(changeSize); //canvas画布自适应
+		function changeSize() {
+			width = $(window).get(0).innerWidth;
+			height = $(window).get(0).innerHeight;
+			canvas.attr("width", width);
+			canvas.attr("height", height);
+		}
+
+		function Circle(origin, radius, augular) {
+			this.origin = origin;
+			this.radius = radius;
+			this.angle = 0;
+			this.augular = augular;
+			this.draw = drawCircle;
+		}
+		function drawCircle(context, fillStyle) {
+			context.save();
+			context.beginPath();
+			context.fillStyle = fillStyle;
+			context.strokeStyle="orange"
+			context.lineWidth = 2;
+			context.arc(this.origin.x, this.origin.y, this.radius, 0, 2 * Math.PI);
+			context.stroke();
+			context.fill();
+			context.closePath();
+			context.restore();
+		}
+		function Point(x, y) {
+			this.x = x;
+			this.y = y;
+		}
+		var sunOrigin = new Point(400, 300); //太阳中心
+		var sun = new Circle(sunOrigin, 50, 0); //太阳
+		var earthPath = new Circle(sunOrigin, 200, 0); //地球路径
+		var earth = new Circle(new Point(earthPath.origin.x + earthPath.radius, earthPath.origin.y), 20, Math.PI / 180); //地球
+		var moonPath = new Circle(earth.origin, 80, earth.augular); //月球路径
+		var moon = new Circle(new Point(moonPath.origin.x + moonPath.radius, moonPath.origin.y), 10, Math.PI / 180); //月球
+		function animation() {
+			ctx.clearRect(0, 0, width, height);
+			earthPath.draw(ctx, "white");
+			sun.draw(ctx, "red");
+			earth.origin.x = earthPath.origin.x + earthPath.radius * Math.cos(earth.angle);
+			earth.origin.y = earthPath.origin.y + earthPath.radius * Math.sin(earth.angle);
+			earth.angle += earth.augular;
+			moon.origin.x = moonPath.origin.x + moonPath.radius * Math.cos(moon.angle);
+			moon.origin.y = moonPath.origin.y + moonPath.radius * Math.sin(moon.angle);
+			moonPath.draw(ctx, "white");
+			earth.draw(ctx, "blue");
+			moon.draw(ctx, "yellow");
+			moon.angle += (moonPath.augular * 2);
+			window.requestAnimationFrame(animation);
+		}
+		window.requestAnimationFrame(animation);
+	</script>
+
+</html>
